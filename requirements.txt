@@ -1,0 +1,19 @@
+# Project environment used for Qwen3-VL inference and dataset inspection.
+# Installed into .venv with Python 3.14.6 from Miniconda (do not replace system Python).
+# Official neuralCAD-Edit CAD/benchmark deps stay in a separate environment.
+
+torch==2.11.0+cu128
+torchvision==0.26.0+cu128
+transformers==5.17.0
+accelerate==1.15.0
+bitsandbytes
+safetensors==0.8.0
+huggingface_hub==1.33.0
+pillow==12.3.0
+numpy==2.5.2
+pandas==3.0.6
+scikit-learn==1.9.1
+matplotlib==3.11.2
+mongita==1.2.0
+jupyterlab==4.6.4
+ipykernel==7.3.0

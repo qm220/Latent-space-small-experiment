@@ -1,0 +1,18 @@
+{
+  "path": "/home/adml/Research/knowledge_inv/manifests/pilot_text_v1.jsonl",
+  "count": 8,
+  "eligible_text_requests": 48,
+  "total_requests_inspected": 192,
+  "selected_ids": [
+    "ZK22J6VYRKQ2RTFD_1758875163.609787",
+    "F332D3FXML85WLR2_1769424096.996583",
+    "4E22SJE7QVTSP2E3_1758737060.465216",
+    "B7A2N74ZJBF9MZHU_1770174133.012106",
+    "SUJ2G2UMJQR7PMBX_1759203600.26663",
+    "3YH2WFSRM22W7DKT_1769177020.525719",
+    "4E22SJE7QVTSP2E3_1758737118.288898",
+    "3YH2WFSRM22W7DKT_1769783385.069543"
+  ],
+  "selection": "text modality with nonempty requests.text, all original views, and original STEP",
+  "evaluation_only": true
+}

@@ -1,0 +1,19 @@
+{
+  "model_id": "Qwen/Qwen3-VL-32B-Instruct",
+  "architecture": "qwen3_vl",
+  "quantization": null,
+  "device_map": "auto",
+  "activation_layers": [8, 16, 24, 32, 40, 48, 56, 63],
+  "n_activation_layers": 8,
+  "n_language_layers_expected": 64,
+  "hidden_size_expected": 5120,
+  "max_new_tokens": 1024,
+  "analysis_tokens": 1024,
+  "default_out": "runs/pilot_text48_7view_qwen32b",
+  "manifest": "manifests/pilot_text_all.jsonl",
+  "notes": {
+    "model": "Dense Qwen3-VL-32B-Instruct. Same 7-view protocol as the 8B run.",
+    "activation_layers": "Eight evenly spaced language blocks from ~1/8 depth through the last of 64.",
+    "compute_canada": "Download on a login node into $SCRATCH/huggingface then run the GPU job with HF_HUB_OFFLINE=1. BF16 weights are ~65 GB; use an A100/H100 80GB. On 40 GB use --quant nf4."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "path": "manifests/pilot_text_random8.jsonl",
+  "count": 8,
+  "eligible_text_requests": 48,
+  "total_requests_inspected": 192,
+  "selected_ids": [
+    "3YH2WFSRM22W7DKT_1769175629.871246",
+    "4E22SJE7QVTSP2E3_1758737238.499021",
+    "ZK22J6VYRKQ2RTFD_1758874422.1403751",
+    "F332D3FXML85WLR2_1770205912.1187751",
+    "F332D3FXML85WLR2_1769424096.996583",
+    "4S7JQK6ZQMAD25GL_1758863286.214549",
+    "4E22SJE7QVTSP2E3_1758737118.288898",
+    "4E22SJE7QVTSP2E3_1758737060.465216"
+  ],
+  "random": true,
+  "seed": 42,
+  "selection": "random sample of 8 eligible text requests (seed=42)",
+  "evaluation_only": true
+}

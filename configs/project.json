@@ -1,0 +1,34 @@
+{
+  "project_root": "/home/adml/Research/knowledge_inv",
+  "storage_dir": "data/edit_192_external",
+  "db_name": "v2_db",
+  "official_repo": "external/neuralCAD-Edit",
+  "official_commit": "68d1acceda0743e364f45fb7823f7cf39c530ba5",
+  "official_config": "external/neuralCAD-Edit/src/config/edit_192_external.json",
+  "model_id": "Qwen/Qwen3-VL-8B-Instruct",
+  "preferred_views": [
+    "toprightiso",
+    "front",
+    "right",
+    "left",
+    "top",
+    "bottom",
+    "back"
+  ],
+  "standard_views": [
+    "front",
+    "back",
+    "left",
+    "right",
+    "top",
+    "bottom",
+    "toprightiso"
+  ],
+  "primary_example_request_id": "ZK22J6VYRKQ2RTFD_1758875163.609787",
+  "activation_layers": [8, 17, 35],
+  "image_max_side": 672,
+  "notes": {
+    "storage_dir": "Official DatabaseManager treats storage_dir as the dataset root that contains mongita_db/, breps/, frames/, and videos/.",
+    "do_not_use_official_db_manager": "src.utils.db.DatabaseManager.make_dirs() creates extra folders in the dataset root. This project uses a read-only Mongita client instead."
+  }
+}

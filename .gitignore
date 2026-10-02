@@ -1,0 +1,41 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Local secrets and editor state
+.env
+.idea/
+.vscode/
+
+# Dataset assets (keep license files on disk; do not commit geometry/video)
+data/edit_192_external/breps/
+data/edit_192_external/frames/
+data/edit_192_external/model_ratings/
+data/edit_192_external/mongita_db/
+data/edit_192_external/parquets/
+data/edit_192_external/results/
+data/edit_192_external/videos/
+data/edit_192_external/.DS_Store
+*.zip
+__MACOSX/
+
+# Official clone and large run artifacts
+external/neuralCAD-Edit/
+.cache/
+*.pt
+*.pth
+*.npy
+*.npz
+*.safetensors
+
+# Pilot generations, activations, and analysis plots (do not push)
+runs/
+reports/
+logs/
+slurm-*.out
+slurm-*.err
+huggingface/
+.huggingface/

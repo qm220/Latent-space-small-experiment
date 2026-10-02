@@ -1,0 +1,19 @@
+{
+  "model_id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+  "architecture": "qwen3_vl_moe",
+  "quantization": null,
+  "device_map": "auto",
+  "activation_layers": [6, 12, 18, 24, 30, 36, 42, 47],
+  "n_activation_layers": 8,
+  "n_language_layers_expected": 48,
+  "hidden_size_expected": 2048,
+  "max_new_tokens": 1024,
+  "analysis_tokens": 1024,
+  "default_out": "runs/pilot_text48_7view_qwen30b_a3b",
+  "manifest": "manifests/pilot_text_all.jsonl",
+  "notes": {
+    "model": "MoE vision-language model (~31B stored, ~3B active). Not text-only Qwen3-30B.",
+    "activation_layers": "Eight evenly spaced language blocks from ~1/8 depth through the last of 48.",
+    "compute_canada": "Download on a login node into $SCRATCH/huggingface then run the GPU job with HF_HUB_OFFLINE=1. BF16 needs ~80 GB VRAM (A100/H100 80GB). On 40 GB use --quant nf4."
+  }
+}
