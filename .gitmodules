@@ -1,0 +1,3 @@
+[submodule "external/neuralCAD-Edit"]
+	path = external/neuralCAD-Edit
+	url = https://github.com/AutodeskAILab/neuralCAD-Edit.git

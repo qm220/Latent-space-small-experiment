@@ -38,7 +38,13 @@ CUDA 12.8 was verified on this machine (RTX 5090, driver 610, 31.84 GB VRAM, BF1
 
 Downloaded and extracted under `data/edit_192_external`. This is the full 192-request / 384-expert-edit release, not the 48-case hackathon slice. The 48 text-modality requests are one of four modality groups inside that full set.
 
-Official code is cloned at `external/neuralCAD-Edit` (commit `68d1acceda0743e364f45fb7823f7cf39c530ba5`). Official `storage_dir` is the dataset root that contains `mongita_db/`.
+Official Autodesk code is a git submodule at `external/neuralCAD-Edit` (pinned to `68d1acceda0743e364f45fb7823f7cf39c530ba5`). That is the [`src/`](https://github.com/AutodeskAILab/neuralCAD-Edit/tree/main/src) tree (harnesses, VLMs, preprocess, configs). After `git clone`, run:
+
+```bash
+git submodule update --init --recursive
+```
+
+Official `storage_dir` is the dataset root that contains `mongita_db/`. The dataset itself is not in this repo.
 
 Do not run official cleanup, ingestion, or benchmark scripts on the source copy.
 

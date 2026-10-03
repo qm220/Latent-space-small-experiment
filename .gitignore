@@ -22,8 +22,7 @@ data/edit_192_external/.DS_Store
 *.zip
 __MACOSX/
 
-# Official clone and large run artifacts
-external/neuralCAD-Edit/
+# Local caches and large binaries (official code is a git submodule)
 .cache/
 *.pt
 *.pth
