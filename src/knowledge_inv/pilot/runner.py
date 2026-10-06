@@ -214,6 +214,33 @@ def run_one_record(
     return summary
 
 
+def select_records(
+    records: list[dict[str, Any]],
+    request_id: str | None = None,
+    request_ids: Sequence[str] | None = None,
+    run_all: bool = False,
+    limit: int | None = None,
+) -> list[dict[str, Any]]:
+    eligible = [item for item in records if item.get("pilot_eligible")] or list(records)
+    if run_all:
+        chosen = eligible
+    elif request_ids:
+        by_id = {item["request_id"]: item for item in records}
+        missing = [rid for rid in request_ids if rid not in by_id]
+        if missing:
+            raise KeyError(f"Request ids not in manifest: {missing}")
+        chosen = [by_id[rid] for rid in request_ids]
+    elif request_id:
+        chosen = [next(item for item in records if item["request_id"] == request_id)]
+    else:
+        chosen = eligible
+    if not run_all and limit is not None:
+        chosen = chosen[:limit]
+    if not chosen:
+        raise ValueError("No records selected.")
+    return chosen
+
+
 def run_pilot(
     manifest_path: Path,
     request_id: str | None,
@@ -227,15 +254,18 @@ def run_pilot(
     runner: QwenVLRunner | None = None,
     capture_layers: list[int] | None = None,
     extra_batch: dict[str, Any] | None = None,
+    request_ids: Sequence[str] | None = None,
+    limit: int | None = None,
 ) -> dict[str, Any] | list[dict[str, Any]]:
     config = load_project_config()
     records = load_jsonl(manifest_path)
-    if run_all:
-        chosen = [item for item in records if item.get("pilot_eligible")]
-    elif request_id:
-        chosen = [next(item for item in records if item["request_id"] == request_id)]
-    else:
-        chosen = [records[0]]
+    chosen = select_records(
+        records,
+        request_id=request_id,
+        request_ids=request_ids,
+        run_all=run_all,
+        limit=limit,
+    )
 
     runner = runner or QwenVLRunner()
     if capture_activations:
@@ -263,7 +293,7 @@ def run_pilot(
                 analysis_tokens,
             )
         )
-    if run_all:
+    if len(summaries) > 1:
         batch = {
             "count": len(summaries),
             "conditions": conditions,

@@ -1,6 +1,6 @@
-DECISION_INSTRUCTIONS = """You are looking at seven views of one original CAD model (front, back, left, right, top, bottom, and isometric) and a text editing request.
+DECISION_INSTRUCTIONS = """You are looking at seven views of one original CAD model (front, back, left, right, top, bottom, and isometric) and a text editing request: {instruction}
 
-Identify:
+Identify and generate:
 1. The intended edit.
 2. A step by step plan for the edit using a CAD modeling software like CadQuery. Do not write CAD code, just describe the steps in natural language.
 """
@@ -9,45 +9,34 @@ Identify:
 
 def decision_prompt(instruction: str, analysis: str | None = None, analysis_label: str | None = None) -> str:
     blocks = [
-        DECISION_INSTRUCTIONS,
-        "Editing request:",
-        instruction.strip(),
+        DECISION_INSTRUCTIONS.replace("{instruction}", instruction.strip()),
     ]
     if analysis:
         blocks.extend(
             [
                 "",
-                f"The following {analysis_label or 'analysis'} was generated in a previous stage.",
-                "Treat it as model-inferred background, not as supplied expert fact.",
+                f"Use the following {analysis_label or 'analysis'} to help you with the decision.",
                 analysis.strip(),
             ]
         )
-    blocks.append("\nWrite the two sections requested above.")
     return "\n".join(blocks)
 
 
-PLAN_PROMPT = """You are looking at seven views of one original CAD model (front, back, left, right, top, bottom, and isometric) and a text editing request.
+PLAN_PROMPT = """You are looking at seven views of one original CAD model (front, back, left, right, top, bottom, and isometric) and a text editing request: {instruction}
 
 Write a short generic plan before any final decision:
 1. What you can see in the images.
 2. What the request appears to ask.
 3. What should be checked before editing.
-
-Editing request:
-{instruction}
 """
 
 
-FBS_PROMPT = """You are looking at seven views of one original CAD model (front, back, left, right, top, bottom, and isometric) and a text editing request.
+FBS_PROMPT = """You are looking at seven views of one original CAD model (front, back, left, right, top, bottom, and isometric) and a text editing request: {instruction}
 
-Generate a brief function-behavior-structure (FBS) background analysis:
-- Function: Deduce the likely purpose of the whole part and the likely functions of its sections.  Also, predict the functional purpose of the requested change.
-- Behavior: Deduce how the part is expected to work before and after the change.
-- Structure: identify the geometry features corresponding to the part's functions and sections relevant to the change.
-
-This analysis is inferred from the images and request only. Label uncertain items as assumptions.
-Editing request:
-{instruction}
+Generate a brief function-behavior-structure (FBS) analysis of this component and the requested change:
+- For function: Deduce the likely purpose of the whole component. Then, decompose the component into multiple sections and deduce the likely function of each section. Lastly, identify the functional purpose of the requested change.
+- For behavior: Deduce how the component and each section is expected to work to achieve its function.
+- For structure: Describe the geometry features corresponding to the component's functions and sections' functions.
 """
 
 CONDITIONS = {

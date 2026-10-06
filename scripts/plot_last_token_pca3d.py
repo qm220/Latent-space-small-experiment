@@ -16,7 +16,7 @@ from sklearn.decomposition import PCA
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from compare_last_token import CONDITIONS, last_prompt_vector, layers_from_run_root, overview_layers
+from compare_last_token import CONDITIONS, last_prompt_vectors, layers_from_run_root, overview_layers
 
 LABELS = {
     "3YH2WFSRM22W7DKT_1769175629.871246": "plant pots",
@@ -61,13 +61,13 @@ def collect_vectors(root: Path) -> dict[int, dict]:
         if summary_path.exists():
             instruction = json.loads(summary_path.read_text(encoding="utf-8")).get("instruction_text", "")
         label = short_label(request_dir.name, instruction, used_labels)
-        for layer in layers:
-            payload.setdefault(layer, {"ids": [], "conds": [], "vectors": [], "labels": []})
-            for cond in CONDITIONS:
-                vec = last_prompt_vector(request_dir / cond, layer).numpy()
+        for cond in CONDITIONS:
+            vecs = last_prompt_vectors(request_dir / cond, layers)
+            for layer in layers:
+                payload.setdefault(layer, {"ids": [], "conds": [], "vectors": [], "labels": []})
                 payload[layer]["ids"].append(request_dir.name)
                 payload[layer]["conds"].append(cond)
-                payload[layer]["vectors"].append(vec)
+                payload[layer]["vectors"].append(vecs[layer].numpy())
                 payload[layer]["labels"].append(label)
     return payload
 

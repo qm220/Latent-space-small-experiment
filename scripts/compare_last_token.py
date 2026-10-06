@@ -47,14 +47,26 @@ def overview_layers(layers: tuple[int, ...] | list[int], n: int = 3) -> tuple[in
     return tuple(ordered[round(i * (len(ordered) - 1) / (n - 1))] for i in range(n))
 
 
-def last_prompt_vector(run_dir: Path, layer: int) -> torch.Tensor:
+def last_prompt_vectors(run_dir: Path, layers: tuple[int, ...] | list[int]) -> dict[int, torch.Tensor]:
+    """Load one activations file and return a cloned last-prompt-token vector per layer.
+
+    The on-disk tensor is [n_tokens, hidden]. Returning a slice would keep the
+    full sequence alive for as long as the caller holds the vector.
+    """
     meta = json.loads((run_dir / "activations.json").read_text(encoding="utf-8"))
     data = torch.load(run_dir / "activations.pt", map_location="cpu", weights_only=True)
-    hidden = data[f"layer_{layer}"].float()
     index = int(meta["prompt_length"]) - 1
-    if index < 0 or index >= hidden.shape[0]:
-        raise IndexError(f"{run_dir}: prompt index {index} outside {tuple(hidden.shape)}")
-    return hidden[index]
+    out: dict[int, torch.Tensor] = {}
+    for layer in layers:
+        hidden = data[f"layer_{layer}"].float()
+        if index < 0 or index >= hidden.shape[0]:
+            raise IndexError(f"{run_dir}: prompt index {index} outside {tuple(hidden.shape)}")
+        out[layer] = hidden[index].detach().clone()
+    return out
+
+
+def last_prompt_vector(run_dir: Path, layer: int) -> torch.Tensor:
+    return last_prompt_vectors(run_dir, (layer,))[layer]
 
 
 def cosine_distance(left: torch.Tensor, right: torch.Tensor) -> float:
@@ -74,10 +86,7 @@ def collect_rows(root: Path, layers: tuple[int, ...] | None = None) -> list[dict
             instruction = json.loads(summary_path.read_text(encoding="utf-8")).get(
                 "instruction_text", ""
             )
-        vectors = {
-            cond: {layer: last_prompt_vector(request_dir / cond, layer) for layer in layers}
-            for cond in CONDITIONS
-        }
+        vectors = {cond: last_prompt_vectors(request_dir / cond, layers) for cond in CONDITIONS}
         for layer in layers:
             for left, right in PAIRS:
                 rows.append(
